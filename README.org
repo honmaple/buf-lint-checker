@@ -1,0 +1,30 @@
+* buf-lint-checker
+  buf lint for flycheck or flymake
+
+** How to use
+   #+begin_src elisp
+   (use-package flymake-buf-lint
+     :quelpa (:fetcher github :repo "honmaple/buf-lint-checker")
+     :hook (protobuf-mode . flymake-buf-lint-setup))
+
+   (use-package flycheck-buf-lint
+     :quelpa (:fetcher github :repo "honmaple/buf-lint-checker")
+     :hook (protobuf-mode . flycheck-buf-lint-setup))
+   #+end_src
+
+   Or alternatively, you can download the repository and install manually by doing:
+   #+BEGIN_SRC bash
+   git clone https://github.com/honmaple/buf-lint-checker ~/.emacs.d/site-lisp/buf-lint-checker
+   #+END_SRC
+
+   #+begin_src elisp
+   (add-to-list 'load-path (expand-file-name "site-lisp/buf-lint-checker" user-emacs-directory))
+
+   (use-package flymake-buf-lint
+     :ensure nil
+     :hook (protobuf-mode . flymake-buf-lint-setup))
+
+   (use-package flycheck-buf-lint
+     :ensure nil
+     :hook (protobuf-mode . flycheck-buf-lint-setup))
+   #+end_src
