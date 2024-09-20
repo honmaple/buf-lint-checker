@@ -48,6 +48,13 @@
   "Flymake buf lint clean do nothing."
   (ignore))
 
+(defun flymake-buf-lint--diag-region(oldfunc buffer line &optional col)
+  "When result is nil, call OLDFUNC with BUFFER LINE but set COL is nil."
+  (let ((result (funcall oldfunc buffer line col)))
+    (unless result
+      (setq result (funcall oldfunc buffer line)))
+    result))
+
 ;;;###autoload
 (defun flymake-buf-lint-setup ()
   "Setup Flymake buf-lint."
@@ -55,7 +62,8 @@
   (set (make-local-variable 'flymake-proc-allowed-file-name-masks)
        '(("\\.proto\\'" flymake-buf-lint--init flymake-buf-lint--clean flymake-buf-lint--name)))
   (set (make-local-variable 'flymake-proc-err-line-patterns)
-       '(("^\\(.*\\.proto\\):\\([0-9]+\\):\\([0-9]+\\):\\(.*\\)$" 1 2 3 4))))
+       '(("^\\(.*\\.proto\\):\\([0-9]+\\):\\([0-9]+\\):\\(.*\\)$" 1 2 3 4)))
+  (advice-add 'flymake-diag-region :around 'flymake-buf-lint--diag-region))
 
 (provide 'flymake-buf-lint)
 ;;; flymake-buf-lint.el ends heree
